@@ -1,3 +1,6 @@
+# useQuery
+> https://react-query.tanstack.com/reference/useQuery
+
 # setting
 
 1. mysql downloads : https://dev.mysql.com/downloads/windows/installer/8.0.html [view more](https://dev-overload.tistory.com/7)
