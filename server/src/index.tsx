@@ -1,5 +1,4 @@
 import express from 'express';
-import mysql from 'mysql';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
@@ -8,14 +7,6 @@ import data from './db/data';
 const app = express();
 const PORT = 8000;
 let postDB = data;
-
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  port: 3306,
-  password: "0000",
-  database: "WEB_BOARD"
-});
 
 app.use(cors());
 app.use(express.json());
@@ -52,9 +43,9 @@ app.post("/read/delete", (req, res) => {
   postDB = postDB.filter(post => post.id !== id);
 });
 
-app.get("/read", (req, res) => {
-  const id = req.body.id;
-  const post = postDB.filter(post => post.id === id);
+app.get("/read/:id", (req, res) => {
+  const id = req.params.id;
+  const post = postDB.find(post => post.id === Number(id));
 
   res.json(post);
 });

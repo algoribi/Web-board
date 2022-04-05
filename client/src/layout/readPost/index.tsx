@@ -1,16 +1,10 @@
-import { useState } from 'react';
-import { useLocation } from "react-router-dom";
-import Axios from "axios";
+import { useState, useEffect } from 'react';
 
 import { Box, Typography } from "@mui/material";
 
+import { useContextController } from 'context';
 import ToolButton from "components/ToolButton";
 import ErrorPage from 'components/ErrorPage';
-import { useEffect } from "react";
-
-type LocationState = {
-  postId : number;
-}
 
 interface Post {
   id : number;
@@ -21,20 +15,22 @@ interface Post {
 }
 
 export default function ReadPost() {
+  const [controller, ] = useContextController();
+  const postId = controller.postId;
   const [postData, setPostData] = useState<Post | null>(null);
 
   useEffect(() => {
-    const location : object | unknown | LocationState = useLocation().state;
-    const postId = (location as LocationState).postId;
-    const getPost = async() => {
-      Axios.get('http://localhost:8000/read', {})
-      .then(response => {
-        setPostData(response.data);
-      });
-    }
-    getPost();
-  });
+    getPostData();
+  }, [postId]);
 
+  async function getPostData() {
+    await fetch(`http://localhost:8000/read/${postId}`, {
+      method : "GET",
+    }).then ((response) => response.json())
+    .then((post) => {
+      setPostData(post);
+    });
+  }
 
   return (
     <>

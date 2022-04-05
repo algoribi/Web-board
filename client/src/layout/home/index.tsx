@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 
 import ToolButton from 'components/ToolButton';
+import { setPostId, useContextController } from 'context';
 
 export default function Home() {
   const [postData, setPostData] = useState<Promise<void> | void | undefined>(undefined);
+  const [, dispatch] = useContextController();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +26,11 @@ export default function Home() {
     })
   }
 
+  const handlePage = (id : number) => {
+    setPostId(dispatch, id);
+    navigate('/read');
+  }
+
   return (
     <>
       <Table>
@@ -33,7 +40,7 @@ export default function Home() {
             return (
               <TableRow key={'post-'+ item.id} hover={true}>
               <TableCell
-                onClick={() => {navigate('/read', {state: {postId : item.id}})}}
+                onClick={() => {handlePage(item.id)}}
                 sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
               >
                 <Box sx={{display: 'flex', flexDirection: 'column', pl: 2}}>

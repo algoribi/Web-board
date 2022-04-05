@@ -1,14 +1,7 @@
 import React, { FC, createContext, useReducer, Reducer, useContext } from "react";
 
-interface Post {
-  id : number;
-  title : string;
-  name : string;
-  content : string;
-  date : string;
-}
-
 interface State {
+  postId : number;
   alertsMessage : string;
   toggleSuccessAlerts : boolean;
   toggleFailAlerts : boolean;
@@ -54,7 +47,9 @@ const setDeletePostData = async (postId : number) => {
 }
 
 const reducer :  Reducer<State, Action> = (state, action) : State => {
-  if (action.type === "ALERTS_MESSAGE" && typeof action.value === 'string') {
+  if (action.type === "POST_ID" && typeof action.value === 'number') {
+    return {...state, postId : action.value};
+  } else if (action.type === "ALERTS_MESSAGE" && typeof action.value === 'string') {
     return {...state, alertsMessage : action.value};
   } else if (action.type === "TOGGLE_SUCCESS_ALERTS" && typeof action.value === 'boolean') {
     return {...state, toggleSuccessAlerts : action.value};
@@ -75,6 +70,7 @@ const reducer :  Reducer<State, Action> = (state, action) : State => {
 
 const ContextControllerProvider: FC = ({ children }) => {
   const initialState : State = {
+    postId : 0,
     alertsMessage : '',
     toggleSuccessAlerts : false,
     toggleFailAlerts : false,
@@ -101,6 +97,7 @@ function useContextController() {
   return context;
 }
 
+const setPostId = (dispatch : React.Dispatch<Action>, value : number) => dispatch({ type: "POST_ID", value});
 const setAlertsMessage = (dispatch : React.Dispatch<Action>, value : string) => dispatch({ type: "ALERTS_MESSAGE", value});
 const setToggleSuccessAlerts = (dispatch : React.Dispatch<Action>, value : boolean) => dispatch({ type: "TOGGLE_SUCCESS_ALERTS", value});
 const setToggleFailAlerts = (dispatch : React.Dispatch<Action>, value : boolean) => dispatch({ type: "TOGGLE_FAIL_ALERTS", value});
@@ -111,6 +108,7 @@ const setTextFieldContent = (dispatch : React.Dispatch<Action>, value : string) 
 
 export {
   ContextControllerProvider,
+  setPostId,
   useContextController,
   setToggleSuccessAlerts,
   setToggleFailAlerts,

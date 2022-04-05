@@ -1,5 +1,5 @@
 // mui
-import { Box, Alert, IconButton, Collapse, Stack } from '@mui/material';
+import { Box, Alert, IconButton, Collapse } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { useContextController, setToggleSuccessAlerts, setToggleFailAlerts } from 'context';
